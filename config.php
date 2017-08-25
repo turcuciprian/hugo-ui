@@ -4,6 +4,6 @@ $config = [
      'servername' =>'localhost',
      'username' => 'root',
      'password' => 'root',
-     'dbname' => 'restapi',
+     'dbname' => 'hugouiDB',
   ]
 ];

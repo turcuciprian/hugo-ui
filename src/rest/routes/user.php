@@ -14,22 +14,14 @@ class rrouteUser
     {
         global $app;
         $app->post('/user', function ($request, $response) {
-       try {
-           $con = $this->db;
-           $sql = 'INSERT INTO `users`(`username`, `email`,`password`) VALUES (:username,:email,:password)';
-           $pre = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-           $values = array(
-           ':username' => $request->getParam('username'),
-           ':email' => $request->getParam('email'),
-    //Using hash for password encryption
-           'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT),
-           );
-           $result = $pre->execute($values);
+        global $dbUser;
+         try {
+             $dbUser->createUser($this,$request, 'username', 'email');
 
-           return $response->withJson(array('status' => 'User Created'), 200);
-       } catch (\Exception $ex) {
-           return $response->withJson(array('error' => $ex->getMessage()), 422);
-       }
+             return $response->withJson(array('status' => 'User Created'), 200);
+         } catch (\Exception $ex) {
+             return $response->withJson(array('error' => $ex->getMessage()), 422);
+         }
 
     });
     }

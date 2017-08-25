@@ -16,10 +16,11 @@ class rrouteUser
         $app->post('/user', function ($request, $response) {
         global $dbUser;
          try {
-             $dbUser->createUser($this,$request, 'username', 'email');
-
+             $dbUser->createUser($this, $request, 'username', 'email');
+             //return if success
              return $response->withJson(array('status' => 'User Created'), 200);
          } catch (\Exception $ex) {
+             //  return if failure
              return $response->withJson(array('error' => $ex->getMessage()), 422);
          }
 
@@ -29,15 +30,9 @@ class rrouteUser
     {
         global $app;
         $app->get('/user/{id}', function ($request, $response) {
+          global $dbUser;
        try {
-           $id = $request->getAttribute('id');
-           $con = $this->db;
-           $sql = 'SELECT * FROM users WHERE id = :id';
-           $pre = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-           $values = array(
-           ':id' => $id, );
-           $pre->execute($values);
-           $result = $pre->fetch();
+           $result = $dbUser->getUserByID($this, $request);
            if ($result) {
                return $response->withJson(array('status' => 'true', 'result' => $result), 200);
            } else {
@@ -53,13 +48,9 @@ class rrouteUser
     {
         global $app;
         $app->get('/users', function ($request, $response) {
+          global $dbUser;
          try {
-             $con = $this->db;
-             $sql = 'SELECT * FROM users';
-             $result = null;
-             foreach ($con->query($sql) as $row) {
-                 $result[] = $row;
-             }
+             $result = $dbUser->getAllUsers($this);
              if ($result) {
                  return $response->withJson(array('status' => 'true', 'result' => $result), 200);
              } else {
@@ -98,6 +89,7 @@ class rrouteUser
 
       });
     }
+
     private function removeUserById()
     {
         global $app;

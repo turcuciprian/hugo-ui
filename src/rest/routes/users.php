@@ -1,4 +1,5 @@
 <?php
+
 $app->post('/user', function ($request, $response) {
    try{
        $con = $this->db;
@@ -16,7 +17,6 @@ $app->post('/user', function ($request, $response) {
    catch(\Exception $ex){
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
-
 });
 
 

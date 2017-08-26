@@ -22,6 +22,6 @@ $container['db'] = function ($c) {
 
 };
 
-require_once('src/rest/rest.php');
+require_once('src/rest/routes.php');
 
 $app->run();

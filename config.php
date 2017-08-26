@@ -7,8 +7,8 @@ $config = [
      'dbname' => 'hugouiDB',
   ]
 ];
-/*
-CREATE TABLE `users` ( 
+/* 
+CREATE TABLE `users` (
  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `username` varchar(255) NOT NULL UNIQUE,
  `email` varchar(255) NOT NULL UNIQUE,

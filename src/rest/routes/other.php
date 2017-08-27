@@ -22,7 +22,7 @@ $app->get('/generateTaskID', function ($request,$response) {
        $result = genID(6);
 
        if($result){
-           return $response->withJson(array('status' => 'true','result'=>$result),200);
+           return $response->withJson(array('status' => 'true','ID'=>$result),200);
        }else{
            return $response->withJson(array('status' => 'Users Not Found'),422);
        }

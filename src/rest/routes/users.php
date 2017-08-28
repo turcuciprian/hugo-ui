@@ -1,6 +1,5 @@
 <?php
-
-$app->post('/user', function ($request, $response) {
+$app->post('/user', function($request, $response) {
    try{
        $con = $this->db;
        $sql = "INSERT INTO `users`(`username`, `email`,`password`) VALUES (:username,:email,:password)";
@@ -20,7 +19,9 @@ $app->post('/user', function ($request, $response) {
 });
 
 
-$app->get('/user/{id}', function ($request,$response) {
+
+           //add a user
+$app->get('/user/{id}', function($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
@@ -41,9 +42,12 @@ $app->get('/user/{id}', function ($request,$response) {
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
 
-});
+});          // get user by ID
 
-$app->get('/users', function ($request,$response) {
+
+
+
+$app->get('/users', function($request,$response) {
    try{
        $con = $this->db;
        $sql = "SELECT * FROM users";
@@ -62,9 +66,8 @@ $app->get('/users', function ($request,$response) {
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
 
-});
-
-$app->put('/user/{id}', function ($request,$response) {
+} );                 // get all users
+$app->put('/user/{id}',function($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
@@ -88,10 +91,11 @@ $app->put('/user/{id}', function ($request,$response) {
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
 
-});
+} );         //update an user
 
 
-$app->delete('/user/{id}', function ($request,$response) {
+
+$app->delete('/user/{id}', function($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
@@ -111,4 +115,4 @@ $app->delete('/user/{id}', function ($request,$response) {
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
 
-});
+}); //delete a user

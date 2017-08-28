@@ -1,9 +1,9 @@
 <?php
 
-$app->get('/posts', function ($request, $response) {
+$app->get('/posts',function($request, $response) {
    try {
        $con = $this->db;
-       $sql = "SELECT * FROM pp WHERE type = 'post'";
+       $sql = "SELECT * FROM pp WHERE type = 'post';";
        $result = null;
        foreach ($con->query($sql) as $row) {
            $result[] = $row;
@@ -18,8 +18,7 @@ $app->get('/posts', function ($request, $response) {
    }
 
 });
-
-$app->get('/pages', function ($request, $response) {
+$app->get('/pages', function($request, $response) {
    try {
        $con = $this->db;
        $sql = "SELECT * FROM pp WHERE type = 'page'";

@@ -6,7 +6,6 @@ $app = new Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
 $container['db'] = function ($c) {
-
    try{
        $db = $c['settings']['db'];
        $options  = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -19,7 +18,6 @@ $container['db'] = function ($c) {
    catch(\Exception $ex){
        return $ex->getMessage();
    }
-
 };
 
 require_once('src/rest/routes.php');

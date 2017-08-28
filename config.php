@@ -27,5 +27,5 @@ CREATE TABLE `posts` (
  `slug` varchar(255) NOT NULL,
  `layout` varchar(255) NOT NULL,
  `url` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 */

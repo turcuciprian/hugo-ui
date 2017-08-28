@@ -18,7 +18,7 @@ CREATE TABLE `users` (
  `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `posts` (
+CREATE TABLE `pp`(
  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `post_title` varchar(255) NOT NULL UNIQUE,
  `post_content` TEXT CHARACTER SET latin1 COLLATE latin1_general_cs,
@@ -26,6 +26,9 @@ CREATE TABLE `posts` (
  `post_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `slug` varchar(255) NOT NULL,
  `layout` varchar(255) NOT NULL,
- `url` varchar(255) NOT NULL
+ `url` varchar(255) NOT NULL,
+ `site_id` int(11) NOT NULL,
+ `type` varchar(255) NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 */

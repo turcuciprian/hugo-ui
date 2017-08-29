@@ -4,7 +4,7 @@ $config = [
      'servername' =>'localhost',
      'username' => 'root',
      'password' => '',
-     'dbname' => 'hugouiDB',
+     'dbname' => 'hugouidb',
   ]
 ];
 
@@ -20,7 +20,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `pp`(
  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `post_title` varchar(255) NOT NULL UNIQUE,
+ `post_title` varchar(255) NOT NULL ,
  `post_content` TEXT CHARACTER SET latin1 COLLATE latin1_general_cs,
  `post_status` varchar(50) NOT NULL,
  `post_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

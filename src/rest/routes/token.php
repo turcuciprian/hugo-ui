@@ -24,8 +24,10 @@ $jwt = JWT::encode($token, $key);
 
 function validateToken($token){
   $key = "mara are mere2";
-  
-  $decoded = JWT::decode($token, $key, array('HS256'));
-
-
+  try{
+    $decoded = JWT::decode($token, $key, array('HS256'));
+      return true;
+  } catch (Exception $e) {
+    return false;
+  }
 }

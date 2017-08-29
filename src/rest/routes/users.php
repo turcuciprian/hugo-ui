@@ -1,4 +1,24 @@
 <?php
+$app->post('/login', function($request, $response) {
+   try{
+       $con = $this->db;
+       $sql = "SELECT * FROM `users` WHERE `username`= :username AND `password` = :password;";
+       $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+       $values = array(
+       ':username' => $request->getParam('username'),
+//Using hash for password encryption
+       'password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT)
+       );
+       $result = $pre->execute($values);
+       return $response->withJson(array('status' => 'User loged'),200);
+
+   }
+   catch(\Exception $ex){
+       return $response->withJson(array('error' => $ex->getMessage()),422);
+   }
+});
+
+
 $app->post('/user', function($request, $response) {
    try{
        $con = $this->db;

@@ -2,15 +2,21 @@
 $app->post('/login', function($request, $response) {
    try{
        $con = $this->db;
-       $sql = "SELECT * FROM `users` WHERE `username`= :username AND `password` = :password;";
+       $sql = "SELECT id FROM `users` WHERE `username`= :username AND `password` = :password;";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $values = array(
        ':username' => $request->getParam('username'),
 //Using hash for password encryption
-       'password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT)
+       ':password' => md5($request->getParam('password'))
        );
-       $result = $pre->execute($values);
-       return $response->withJson(array('status' => 'User loged'),200);
+        $pre->execute($values);
+       $userID = $pre->fetch();
+       if(isset($userID) && $userID){
+         $token = createToken($userID);
+         return $response->withJson(array('status' => 'user Logged','token'=>$token),200);
+       }else{
+         return $response->withJson(array('error' => 'invalid username and password'),422);
+       }
 
    }
    catch(\Exception $ex){
@@ -28,7 +34,7 @@ $app->post('/user', function($request, $response) {
        ':username' => $request->getParam('username'),
        ':email' => $request->getParam('email'),
 //Using hash for password encryption
-       'password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT)
+      ':password' => md5($request->getParam('password'))
        );
        $result = $pre->execute($values);
        return $response->withJson(array('status' => 'User Created'),200);

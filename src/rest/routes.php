@@ -1,9 +1,11 @@
 <?php
+require_once 'vendor/autoload.php';
+
+require_once  'routes/token.php';
 require_once 'routes/users.php';
 require_once  'routes/files.php';
 require_once  'routes/other.php';
 require_once  'routes/pp.php';
-require_once  'routes/token.php'; 
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });

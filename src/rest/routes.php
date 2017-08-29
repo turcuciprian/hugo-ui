@@ -5,6 +5,8 @@ require_once 'routes/users.php';
 require_once  'routes/files.php';
 require_once  'routes/other.php';
 require_once  'routes/pp.php';
+require_once  'routes/delete_posts.php';
+
 
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;

@@ -4,8 +4,10 @@ $app->delete('/pp/{id}', function ($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
-       $sql = "DELETE FROM pp WHERE id = :id";
+       $sql = "DELETE FROM `pp` WHERE id = :id;";
+
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+
        $values = array(
        ':id' => $id);
        $result = $pre->execute($values);

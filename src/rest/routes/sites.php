@@ -63,10 +63,8 @@ $app->post('/site', function($request, $response) {
        ':site_name' => $request->getParam('site_name'),
        ':user_id' => $request->getParam('user_id'),
        );
-
        $token = $request->getParam('token');
        $tokenValid = validateToken($token);
-
         $result = $pre->execute($values);
         if($tokenValid){
           if($result){
@@ -77,11 +75,8 @@ $app->post('/site', function($request, $response) {
         }else{
           return $response->withJson(array('status' => 'Token invalid'),422);
         }
-
-
        }
        catch(\Exception $ex){
         return $response->withJson(array('error' => $ex->getMessage()),422);
        }
-
        });          // get user by ID

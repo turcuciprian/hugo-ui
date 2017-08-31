@@ -31,4 +31,11 @@ CREATE TABLE `pp`(
  `type` varchar(255) NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `sites`(
+ `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ `site_name` varchar(255) NOT NULL ,
+ `user_id` int(11) NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 */

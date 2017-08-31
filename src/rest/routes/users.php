@@ -30,6 +30,7 @@ $app->post('/user', function($request, $response) {
        $con = $this->db;
        $sql = "INSERT INTO `users`(`username`, `email`,`password`) VALUES (:username,:email,:password)";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+
        $values = array(
        ':username' => $request->getParam('username'),
        ':email' => $request->getParam('email'),
@@ -49,7 +50,9 @@ $app->post('/user', function($request, $response) {
            //add a user
 $app->get('/user/{id}', function($request,$response) {
    try{
-       $id     = $request->getAttribute('id');
+
+      $id     = $request->getAttribute('id');
+       $token     = $request->getParam('token');
        $con = $this->db;
        $sql = "SELECT * FROM users WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -57,11 +60,17 @@ $app->get('/user/{id}', function($request,$response) {
        ':id' => $id);
        $pre->execute($values);
        $result = $pre->fetch();
-       if($result){
-           return $response->withJson(array('status' => 'true','result'=> $result),200);
+       $tokenValid = validateToken($token);
+       if($tokenValid){
+         if($result){
+             return $response->withJson(array('status' => 'true','result'=> $result),200);
+         }else{
+             return $response->withJson(array('status' => 'User Not Found'),422);
+         }
        }else{
-           return $response->withJson(array('status' => 'User Not Found'),422);
+         return $response->withJson(array('status' => 'Token invalid'),422);
        }
+
 
    }
    catch(\Exception $ex){
@@ -73,19 +82,29 @@ $app->get('/user/{id}', function($request,$response) {
 
 
 
-$app->get('/users', function($request,$response) {
+$app->get('/users/{token}', function($request,$response) {
    try{
+     $token = $request->getAttribute('token');
        $con = $this->db;
        $sql = "SELECT * FROM users";
        $result = null;
+       $tokenValid = validateToken($token);
+
        foreach ($con->query($sql) as $row) {
            $result[] = $row;
+
        }
-       if($result){
-           return $response->withJson(array('status' => 'true','result'=>$result),200);
+       if($tokenValid){
+         if($result){
+             return $response->withJson(array('status' => 'true','result'=>$result),200);
+         }else{
+             return $response->withJson(array('status' => 'Users Not Found'),422);
+         }
        }else{
-           return $response->withJson(array('status' => 'Users Not Found'),422);
+         return $response->withJson(array('status' => 'Token invalid'),422);
+
        }
+
 
    }
    catch(\Exception $ex){

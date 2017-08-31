@@ -51,7 +51,7 @@ $app->post('/user', function($request, $response) {
 $app->get('/user/{id}', function($request,$response) {
    try{
 
-     $id     = $request->getAttribute('id');
+      $id     = $request->getAttribute('id');
        $token     = $request->getParam('token');
        $con = $this->db;
        $sql = "SELECT * FROM users WHERE id = :id";

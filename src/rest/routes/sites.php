@@ -28,6 +28,9 @@ $app->post('/site', function($request, $response) {
      });        //create a new site
 
 
+
+/*
+
        $app->put('/site/{id}',function($request,$response) {
           try{
               $id  = $request->getAttribute('id');
@@ -51,9 +54,40 @@ $app->post('/site', function($request, $response) {
             }else{
               return $response->withJson(array('status' => 'Token invalid'),422);
           }
-          exit();
+
           catch(\Exception $ex){
               return $response->withJson(array('error' => $ex->getMessage()),422);
           }
 
        } );         //update a site
+*/
+       $app->get('/site/{id}/{token}', function($request,$response) {
+          try{
+
+             $id = $request->getAttribute('id');
+              $token = $request->getAttribute('token');
+              $con = $this->db;
+              $sql = "SELECT * FROM sites WHERE id = :id";
+              $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+              $values = array(
+              ':id' => $id);
+              $pre->execute($values);
+              $result = $pre->fetch();
+              $tokenValid = validateToken($token);
+              if($tokenValid){
+                if($result){
+                    return $response->withJson(array('status' => 'true','result'=> $result),200);
+                }else{
+                    return $response->withJson(array('status' => 'Site Not Found'),422);
+                }
+              }else{
+                return $response->withJson(array('status' => 'Token invalid'),422);
+              }
+
+
+          }
+          catch(\Exception $ex){
+              return $response->withJson(array('error' => $ex->getMessage()),422);
+          }
+
+       });

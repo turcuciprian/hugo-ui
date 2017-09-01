@@ -84,10 +84,10 @@ $app->get('/user/{id}', function($request,$response) {
 
 $app->get('/users/{token}', function($request,$response) {
    try{
-     $token = $request->getAttribute('token');
        $con = $this->db;
        $sql = "SELECT * FROM users";
        $result = null;
+       $token = $request->getAttribute('token');
        $tokenValid = validateToken($token);
 
        foreach ($con->query($sql) as $row) {
@@ -146,16 +146,22 @@ $app->delete('/user/{id}', function($request,$response) {
        $con = $this->db;
        $sql = "DELETE FROM users WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+       $token = $request->getParam('token');
+       $tokenValid = validateToken($token);
        $values = array(
        ':id' => $id);
        $result = $pre->execute($values);
+if($tokenValid){
        if($result){
            return $response->withJson(array('status' => 'User Deleted'),200);
        }else{
            return $response->withJson(array('status' => 'User Not Found'),422);
        }
-
+} else {
+    return $response->withJson(array('status' => 'Token invalid'),422);
    }
+   exit;
+ }
    catch(\Exception $ex){
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }

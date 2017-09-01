@@ -118,25 +118,30 @@ $app->put('/user/{id}',function($request,$response) {
        $con = $this->db;
        $sql = "UPDATE users SET name=:name,email=:email,password=:password WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+       exit;
        $values = array(
        ':name' => $request->getParam('name'),
        ':email' => $request->getParam('email'),
        ':password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT),
        ':id' => $id
        );
+       $token = $request->getParam('token');
+       $tokenValid = validateToken($token);
        $result =  $pre->execute($values);
+       if($tokenValid){
+
        if($result){
            return $response->withJson(array('status' => 'User Updated'),200);
        }else{
            return $response->withJson(array('status' => 'User Not Found'),422);
        }
 
-   }
+   } else {
+       return $response->withJson(array('status' => 'Token invalid'),422);
+     }
    catch(\Exception $ex){
        return $response->withJson(array('error' => $ex->getMessage()),422);
-   }
-
-} );         //update an user
+   } );         //update an user
 
 
 

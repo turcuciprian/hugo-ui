@@ -22,7 +22,7 @@ $app->get('/posts',function($request, $response) {
          return $response->withJson(array('status' => 'Token invalid'),422);
 
        }
-   }catch (\Exception $ex) {
+   }catch (Exception $ex) {
        return $response->withJson(array('error' => $ex->getMessage()), 422);
    }
 
@@ -46,13 +46,13 @@ $app->get('/pages', function($request, $response) {
        }
      }else{
          return $response->withJson(array('status' => 'Token invalid'),422);
-   } 
- }catch (\Exception $ex) {
+   }
+ }catch (Exception $ex) {
        return $response->withJson(array('error' => $ex->getMessage()), 422);
    }
 });
 
-$app->delete('/pp/{id}', function ($request,$response) {
+$app->post('/pp/{id}', function ($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
@@ -61,13 +61,19 @@ $app->delete('/pp/{id}', function ($request,$response) {
        $values = array(
        ':id' => $id);
        $result = $pre->execute($values);
+       $token = $request->getParam('token');
+       $tokenValid = validateToken($token);
+       if($tokenValid){
+
        if($result){
            return $response->withJson(array('status' => 'Post Deleted'),200);
        }else{
            return $response->withJson(array('status' => 'Post Not Found'),422);
        }
-   }
-   catch(\Exception $ex){
+     }else{
+         return $response->withJson(array('status' => 'Token invalid'),422);
+       }
+   }catch(Exception $ex){
        return $response->withJson(array('error' => $ex->getMessage()),422);
    }
 

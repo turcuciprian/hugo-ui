@@ -11,6 +11,8 @@ $app->post('/login', function($request, $response) {
        );
         $pre->execute($values);
        $userID = $pre->fetch();
+      //  bd6ecd9631304a726ac8321f8790dd58
+
        if(isset($userID) && $userID){
          $token = createToken($userID);
          return $response->withJson(array('status' => 'user Logged','token'=>$token),200);
@@ -112,19 +114,20 @@ $app->get('/users/{token}', function($request,$response) {
    }
 
 } );                 // get all users
-$app->put('/user/{id}',function($request,$response) {
+$app->post('/user/{id}',function($request,$response) {
    try{
        $id     = $request->getAttribute('id');
        $con = $this->db;
-       $sql = "UPDATE users SET name=:name,email=:email,password=:password WHERE id = :id";
+       $sql = "UPDATE `users` SET `username`=:username,`email`=:email,`password`=:password WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-       exit;
        $values = array(
-       ':name' => $request->getParam('name'),
-       ':email' => $request->getParam('email'),
-       ':password' => password_hash($request->getParam('password'),PASSWORD_DEFAULT),
-       ':id' => $id
+         ':username' => $request->getParam('username'),
+         ':email' => $request->getParam('email'),
+         ':password' => md5($request->getParam('password')),
+         ':id' => $id
        );
+
+
        $token = $request->getParam('token');
        $tokenValid = validateToken($token);
        $result =  $pre->execute($values);
@@ -136,18 +139,19 @@ $app->put('/user/{id}',function($request,$response) {
            return $response->withJson(array('status' => 'User Not Found'),422);
        }
 
-   } else {
+    } else {
        return $response->withJson(array('status' => 'Token invalid'),422);
      }
-   catch(\Exception $ex){
+   }
+   catch(Exception $ex){
        return $response->withJson(array('error' => $ex->getMessage()),422);
-   } );         //update an user
+   }});        //update an user
 
 
 
 $app->delete('/user/{id}', function($request,$response) {
    try{
-       $id     = $request->getAttribute('id');
+       $id = $request->getAttribute('id');
        $con = $this->db;
        $sql = "DELETE FROM users WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

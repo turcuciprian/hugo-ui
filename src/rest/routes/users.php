@@ -149,10 +149,11 @@ $app->post('/user/{id}',function($request,$response) {
 
 
 
-$app->delete('/user/{id}', function($request,$response) {
+$app->post('/userdelete/{id}', function($request,$response) {
    try{
        $id = $request->getAttribute('id');
        $con = $this->db;
+
        $sql = "DELETE FROM users WHERE id = :id";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $token = $request->getParam('token');

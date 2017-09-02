@@ -5,7 +5,6 @@ $app->post('/site', function($request, $response) {
        $sql = "INSERT INTO `sites` (`site_name`,`user_id`) VALUES (:site_name, :user_id)";
        $pre  = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $values = array(
-//Using hash for password encryption
        ':site_name' => $request->getParam('site_name'),
        ':user_id' => $request->getParam('user_id'),
        );

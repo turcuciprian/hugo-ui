@@ -33,3 +33,38 @@ $app->get('/generateTaskID', function ($request, $response) {
    }
 
 });
+$app->get('/getAJson', function ($request, $response) {
+   try {
+       $result = null;
+       $names = array('Ioana Chichernea', 'Turcu Ciprian','Steve Jobs','Elon Musk','Dalai Lama');
+       $responseArr = array('status' => 'true', 'names' => $names);
+
+       if ($result) {
+           return $response->withJson($responseArr, 200);
+       } else {
+           return $response->withJson(array('users' => $names), 422);
+       }
+   } catch (\Exception $ex) {
+       return $response->withJson(array('error' => $ex->getMessage()), 422);
+   }
+});
+
+$app->post('/postSomething', function ($request, $response) {
+   try {
+       $result = null;
+       $values = array(
+         ':name' => $request->getParam('name')
+         ':age' => $request->getParam('age')
+      );
+
+       $responseArr = array('status' => 'true', 'userName' => $values[':name'], 'userAge' => $values[':age']);
+
+       if ($result) {
+           return $response->withJson($responseArr, 200);
+       } else {
+           return $response->withJson(array('status' => $responseArr), 422);
+       }
+   } catch (\Exception $ex) {
+       return $response->withJson(array('error' => $ex->getMessage()), 422);
+   }
+});
